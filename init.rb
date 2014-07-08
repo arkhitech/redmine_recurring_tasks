@@ -3,12 +3,14 @@ require 'issues_patch'
 
 # view hooks
 require_dependency 'recurring_tasks/hooks'
+require_dependency 'recurring_tasks/recurring_issue_hook'
 
-Redmine::Plugin.register :recurring_tasks do
+
+Redmine::Plugin.register :redmine_recurring_tasks do
   name 'Recurring Tasks (Issues)'
-  author 'Teresa N.'
-  author_url 'https://github.com/nutso/'
-  url 'https://github.com/nutso/redmine-plugin-recurring-tasks'
+  author 'Arkhitech'
+  author_url 'http://www.arkhitech.com'
+  url 'https://github.com/arkhitech/redmine_recurring_tasks'
   description 'Allows you to set a task to recur on a regular schedule, or when marked complete, regenerate a new task due in the future. Plugin is based -- very loosely -- on the periodic tasks plugin published by Tanguy de Courson'
   version '1.3.0'
   

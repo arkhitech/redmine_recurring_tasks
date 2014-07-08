@@ -12,14 +12,14 @@ class RecurringTask < ActiveRecord::Base
   INTERVAL_YEAR = 'y'
   
   # must come before validations otherwise uninitialized
-  INTERVAL_UNITS_LOCALIZED = [l(:interval_day), l(:interval_week), l(:interval_month), l(:interval_year)]
+  INTERVAL_UNITS_LOCALIZED = {l(:interval_day) => INTERVAL_DAY, l(:interval_week) => INTERVAL_WEEK, l(:interval_month) => INTERVAL_MONTH, l(:interval_year) => INTERVAL_YEAR}
 
   # pulled out validates_presence_of separately
   # for older Rails compatibility
-  validates_presence_of :interval_localized_name
+  validates_presence_of :interval_unit
   validates_presence_of :interval_number
   
-  validates_inclusion_of :interval_localized_name, :in => RecurringTask::INTERVAL_UNITS_LOCALIZED, :message => "#{l(:error_invalid_interval)} '%{value}' (Validation)"
+  validates_inclusion_of :interval_unit, :in => RecurringTask::INTERVAL_UNITS_LOCALIZED.values, :message => "#{l(:error_invalid_interval)} '%{value}' (Validation)"
   validates_numericality_of :interval_number, :only_integer => true, :greater_than => 0
   # cannot validate presence of issue if want to use other features; requiring presence of fixed_schedule requires it to be true
 
@@ -111,7 +111,6 @@ class RecurringTask < ActiveRecord::Base
   # check whether a recurrence is needed, and add one if not
   def recur_issue_if_needed!
     if issue.nil?
-      puts "Recurring a deleted issue is not supported."
       return false
     end    
     
@@ -126,7 +125,6 @@ class RecurringTask < ActiveRecord::Base
       new_issue.done_ratio = 0
       new_issue.status = IssueStatus.default # issue status is NOT automatically new, default is whatever the default status for new issues is
       new_issue.save!
-      puts "Recurring #{issue.id}: #{issue.subj_date}, created #{new_issue.id}: #{new_issue.subj_date}"
     
       self.issue = new_issue
       save!
@@ -138,7 +136,7 @@ class RecurringTask < ActiveRecord::Base
     if !(issue.nil?)
       i = issue.subj_date
     end
-    "#{i} (#{l(:label_recurrence_pattern)} #{interval_number} #{interval_unit}s " + (:fixed_schedule ? l(:label_recurs_fixed) : l(:label_recurs_dependent)) + ")"
+    "#{i} (#{l(:label_recurrence_pattern)} #{interval_number} #{interval_localized_name}s " + (fixed_schedule ? l(:label_recurs_fixed) : l(:label_recurs_dependent)) + ")"
   end
   
   def to_s_long

@@ -1,10 +1,11 @@
 <div class="box tabular"> 
-<%= labelled_form_for rt, :url => { :action => next_step, :id=>rt } do |f| %>
-    <p><%= error_messages_for 'recurring_task' %></p>
+<%= labelled_form_for recurring_task, :url => { :action => next_step, :id=>rt } do |f| %>
+    <p><%= error_messages_for recurring_task %></p>
     <p><%= f.hidden_field :id %></p>
     <p><%= label(:recurring_task, :current_issue_id, l(:field_issue)) %><%= collection_select('recurring_task', 'current_issue_id', @recurrable_issues, :id, :subj_date) %></p>
     <p><%= f.number_field :interval_number %></p>
-    <p><%= label(:recurring_task, :interval_localized_name, l(:field_interval_unit)) %><%= select 'recurring_task', 'interval_localized_name', @interval_units %></p>
+    <p><%= label(:recurring_task, :interval_localized_name, l(:field_interval_unit)) %>
+      <%= f.select :interval_unit, RecurringTask::INTERVAL_UNITS_LOCALIZED.to_a %></p>
     <p><%= f.check_box :fixed_schedule %> </p>
     <p><%= f.submit %></p>
 <% end %>

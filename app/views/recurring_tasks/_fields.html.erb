@@ -1,0 +1,16 @@
+<div class="box tabular"> 
+<%= fields_for recurring_task do |f| %>
+    <p><%= error_messages_for recurring_task %></p>
+    <p><%= f.hidden_field :id %></p>
+    <p>
+      <%= label(:recurring_task, l(:field_interval_number)) %>
+      <%= f.number_field :interval_number %></p>
+    <p>
+      <%= label(:recurring_task, :interval_localized_name, l(:field_interval_unit)) %>
+      <%= f.select :interval_unit, RecurringTask::INTERVAL_UNITS_LOCALIZED.to_a %></p>
+    <p>
+      <%= label(:recurring_task, l(:field_fixed_schedule)) %>
+      <%= f.check_box :fixed_schedule %> 
+    </p>
+<% end %>
+</div>
