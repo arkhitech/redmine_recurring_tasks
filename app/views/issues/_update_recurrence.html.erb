@@ -8,8 +8,8 @@
     <% end %>
     <% if issue.recurs? %>
       <ul>
-        <% issue.recurring_tasks.each do |rt| %>
-          <li><%= if User.current.allowed_to?(:view_issue_recurrence, project) then link_to(rt.to_s, recurring_task_path(:id => rt.id, :project_id => project.id)) else rt.to_s end %></li>
+        <% issue.recurring_tasks.each do |recurring_task| %>
+          <li><%= if User.current.allowed_to?(:view_issue_recurrence, project) then link_to(recurring_task.to_s, recurring_task_path(:id => recurring_task.id, :project_id => project.id)) else recurring_task.to_s end %></li>
         <% end %>
       </ul>
     <% elsif !issue.new_record? %>
