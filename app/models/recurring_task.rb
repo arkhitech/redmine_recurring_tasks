@@ -105,9 +105,9 @@ class RecurringTask < ActiveRecord::Base
   
   # whether a recurrence needs to be added
   def need_to_recur?
-    if fixed_schedule and (previous_date_for_recurrence + recurrence_pattern) <= (Time.now.end_of_day)
+    if fixed_schedule and (previous_date_for_recurrence + recurrence_pattern) <= (Time.now.to_date + 1.day)
       true 
-    elsif issue.closed? and (previous_date_for_recurrence + recurrence_pattern) <= (Time.now.end_of_day)
+    elsif issue.closed? and (previous_date_for_recurrence + recurrence_pattern) <= (Time.now.to_date + 1.day)
       true
     else
       false
