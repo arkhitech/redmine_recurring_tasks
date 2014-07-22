@@ -54,17 +54,17 @@ class RecurringTask < ActiveRecord::Base
   # used for migration #2
   def self.get_interval_from_localized_name(value)
     case value
-      when l(:interval_day)
-        INTERVAL_DAY
-      when l(:interval_week)
-        INTERVAL_WEEK
-      when l(:interval_month)
-        INTERVAL_MONTH
-      when l(:interval_year)
-        INTERVAL_YEAR
-      else
-        raise "#{l(:error_invalid_interval)} #{value} (interval_localized_name=)"
-      end
+    when l(:interval_day)
+      INTERVAL_DAY
+    when l(:interval_week)
+      INTERVAL_WEEK
+    when l(:interval_month)
+      INTERVAL_MONTH
+    when l(:interval_year)
+      INTERVAL_YEAR
+    else
+      raise "#{l(:error_invalid_interval)} #{value} (interval_localized_name=)"
+    end
   end
   
   # time interval value of the recurrence pattern
@@ -156,7 +156,7 @@ class RecurringTask < ActiveRecord::Base
     end # do each
   end # end add_recurrences
   
-private
+  #private
   # the date from which to recur
   # for a fixed schedule, this is the due date
   # for a relative schedule, this is the date closed
@@ -164,10 +164,12 @@ private
     if issue.nil? 
       logger.error "Issue is nil for recurrence #{id}."
       Date.today
-    elsif fixed_schedule and !issue.due_date.nil? 
-      issue.due_date 
+#    elsif fixed_schedule and !issue.due_date.nil? 
+#      issue.due_date 
+    elsif fixed_schedule
+      issue.created_on 
     elsif issue.closed_on.nil? 
-      issue.updated_on
+      issue.created_on
     else 
       issue.closed_on 
     end
